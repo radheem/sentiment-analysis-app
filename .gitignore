@@ -1,0 +1,13 @@
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+.DS_Store
+
+.env
+venv/
+
+.idea/
+
+sentiment_analysis_env/
