@@ -10,4 +10,5 @@ venv/
 
 .idea/
 
-sentiment_analysis_env/
+# ignoreing the venv folder
+sentiment_app/
