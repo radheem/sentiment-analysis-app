@@ -20,7 +20,10 @@ To setup the project locally:
     $ python manage.py migrate
     $ python manage.py runserver
     ```
-
-3. Open a browser and go to http://localhost:8000/
+3. Run scripts/save_model.py to generate a model
+    <br>a. add path to dir where you want to place the model
+    <br>b. provide name of the model
+    <br>c. both params later used in .env 
+4. Open a browser and go to http://localhost:8000/
 4. Sign up
 

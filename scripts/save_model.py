@@ -9,7 +9,7 @@ from models import SentimentChoices
 
 def main():
     # add trained models folder to gitignore
-    model_path = os.path.join(curr_dir,'path/to/dir', 'name_of_model')
+    model_path = os.path.join(curr_dir,'path/to/model', 'name_of_model')
     model_name = 'cardiffnlp/twitter-roberta-base-sentiment-latest'
     classification_model = sentimentAnalysis(model_name,"",True)
     text = "I am so happy"
