@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .roberta_base_app import sentimentAnalysis
 from dotenv import load_dotenv
 from django.contrib.auth.decorators import login_required
@@ -41,3 +41,9 @@ def classification(request):
             return HttpResponse("Invalid form")
     else:
         return render(request, 'classify.html',context)
+
+@login_required
+def delete_record(request, id):  
+    employee = UserClassifications.objects.get(id=id)  
+    employee.delete()  
+    return redirect("history")  

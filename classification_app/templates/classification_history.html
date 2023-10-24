@@ -10,19 +10,23 @@
     <table class="table table-striped table-bordered table-sm">  
         <thead class="thead-dark">  
         <tr>  
-            <th>Id</th>  
+            <th>id</th>
             <th>text</th>  
             <th>sentiment</th>  
             <th>time</th>    
+            <th>action</th>
         </tr>  
         </thead>  
         <tbody>  
-    {% for classifications in records %}  
+    {% for classification in records %}  
         <tr>  
-            <td>{{ classifications.id }}</td>  
-            <td>{{ classifications.input_text }}</td>  
-            <td>{{ classifications.sentiment }}</td>  
-            <td>{{ classifications.createdAt }}</td>    
+            <td>{{forloop.counter}}</td>
+            <td>{{ classification.input_text }}</td>  
+            <td>{{ classification.sentiment }}</td>  
+            <td>{{ classification.createdAt }}</td>    
+            <td>  
+              <a href="/classification/delete/{{ classification.id }}">Delete</a>  
+            </td>  
         </tr>  
     {% endfor %}  
         </tbody>  
