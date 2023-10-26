@@ -6,17 +6,40 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
 
-from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
+from classification_app.models import UserClassifications
 
+from .forms import RegisterForm, LoginForm, UpdateUserForm
+from django.db.models import Count
+import logging
 
 def home(request):
-    return render(request, 'users/home.html')
+    if request.user.is_authenticated:
+        context = {
+            "sentiments": {
+                "positive": 0,
+                "negative": 0,
+                "neutral": 0
+            },
+            "total": 0
+        }
+        user_id = request.user.id
+        classification_records = UserClassifications.objects.filter(user_id=user_id).values("sentiment").annotate(classification_count=Count('id'))
+        logging.log(logging.INFO,"records:{}".format(classification_records))
+        
+        for i in range(len(classification_records)):
+            context["total"] += classification_records[i]["classification_count"]
+            context["sentiments"][classification_records[i]["sentiment"]] = classification_records[i]["classification_count"]
+        return render(request, 'home.html', context)
+    else:
+        # User is not logged in
+        return render(request, 'home.html')
+    
 
 
 class RegisterView(View):
     form_class = RegisterForm
     initial = {'key': 'value'}
-    template_name = 'users/register.html'
+    template_name = 'register.html'
 
     def dispatch(self, request, *args, **kwargs):
         # will redirect to the home page if a user tries to access the register page while logged in
@@ -63,9 +86,9 @@ class CustomLoginView(LoginView):
 
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'users/password_reset.html'
-    email_template_name = 'users/password_reset_email.html'
-    subject_template_name = 'users/password_reset_subject'
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    subject_template_name = 'password_reset_subject'
     success_message = "We've emailed you instructions for setting your password, " \
                       "if an account exists with the email you entered. You should receive them shortly." \
                       " If you don't receive an email, " \
@@ -74,7 +97,7 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
-    template_name = 'users/change_password.html'
+    template_name = 'change_password.html'
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('users-home')
 
@@ -83,15 +106,12 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 def profile(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-
-        if user_form.is_valid() and profile_form.is_valid():
+        
+        if user_form.is_valid():
             user_form.save()
-            profile_form.save()
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='users-profile')
     else:
         user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
 
-    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+    return render(request, 'profile.html', {'user_form': user_form})

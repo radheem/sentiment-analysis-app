@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome, {{user.username|default:'Guest'}}</h1>
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="numeric-box"><p style="color:black;">{{total}}<br>Classifications</p></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="numeric-box"><p style="color:black;">{{sentiments.positive|default:"0"}}<br>Positive</p></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="numeric-box"><p style="color:black;">{{sentiments.negative|default:"0"}}<br>Negative</p></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="numeric-box"><p style="color:black;">{{sentiments.neutral|default:"0"}}<br>Neutral</p></div>
+                </div>
+            </div>
+        {% endif %}
+        <hr class="my-4">
+        <div class="mb-3">
+            
+        </div>
+        <p class="lead">
+            {% if user.is_authenticated %}
+                <p class="home-buttons">
+                    <a class="btn btn-primary btn-lg" href="{% url 'classify' %}" role="button">Classify</a>
+                    <a class="btn btn-primary btn-lg" href="{% url 'history' %}" role="button">Classification records</a> 
+                    <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
+                </p>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
+            {% endif %}
+        </p>
+    </div>
+
+{% endblock content %}
