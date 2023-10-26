@@ -1,4 +1,4 @@
-{% extends "users/base.html" %}
+{% extends "base.html" %}
 {% block title %}Profile Page{% endblock title %}
 {% block content %}
     {% if user_form.errors %}
@@ -28,7 +28,6 @@
                         <a href="{% url 'password_change' %}">Change Password</a>
                         <hr>
                     </div>
-                    <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
                 </div>
             </div>
             <br><br>

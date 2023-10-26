@@ -1,0 +1,20 @@
+/* .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh; 
+} */
+.numeric-box {
+    width: 200px;
+    height: 100px;
+    background-color: rgb(120 127 133 / 26%);
+    color: #ffffff;
+    text-align: center;
+    line-height: 40px;
+    padding-top: 10px;
+    font-size: 24px;
+    border-radius: 10px;
+}
+.home-buttons {
+    line-height: 40px;  
+}
